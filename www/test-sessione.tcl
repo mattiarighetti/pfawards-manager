@@ -29,46 +29,83 @@ set domanda [db_string domanda ""]
 # Se risposta già data, prepara ad_form in edit, se no in new
 set risp_ok [db_string risp_ok ""]
 if {$risp_ok == ""} {
-    set buttons [list [list "Salva" new]]
+    set buttons [list [list "Procedi alla domanda successiva" new]]
 } else {
-    set buttons [list [list "Aggiorna" edit]]
+    set buttons [list [list "Aggiorna risposta" edit]]
 }
-ad_form -name risposta \
-    -mode $mode \
-    -edit_buttons $buttons \
-    -has_edit 1 \
-    -export {esame_id} \
-    -select_query_name load_risposta \
-    -cancel_url "test-fine?esame_id=$esame_id" \
-    -cancel_label "Concludi test" \
-    -form {
-	rispusr_id:key
-        {risposta_id:integer(radio),optional
-            {label "Risposte"}
-  	    {options {[db_list_of_lists risposte ""]}}
-            {html {size 4}}
-	    {help_text "Puoi scegliere solo una risposta. In caso di modifica, deseleziona la precedente."}
-        }
-    } -new_data {
-	db_transaction {
-	    db_dml ins_risp ""
+if {$domanda_num == 5} {
+    ad_form -name risposta \
+	-mode $mode \
+	-edit_buttons $buttons \
+	-has_edit 1 \
+	-export {esame_id} \
+	-select_query_name load_risposta \
+	-cancel_url "test-fine?esame_id=$esame_id" \
+	-cancel_label "Salva i tuoi risultati e concludi test" \
+    	-form {
+	    rispusr_id:key
+	    {risposta_id:integer(radio),optional
+		{label "Risposte"}
+		{options {[db_list_of_lists risposte ""]}}
+		{html {size 4}}
+		{help_text "Puoi scegliere solo una risposta. In caso di modifica, deseleziona la precedente."}
+	    }
+	} -new_data {
+	    db_transaction {
+		db_dml ins_risp ""
+	    }
+	} -edit_data {
+	    db_dml upd_risp ""
+	} -on_submit {
+	    set ctr_errori 0
+	    if {$ctr_errori > 0} {
+		break
+	    }
+	} -after_submit {
+	    if {$domanda_num == 5} {
+		ad_returnredirect "test-sessione?esame_id=$esame_id&rispusr_id=$rispusr_id"
+	    } else {
+		incr rispusr_id
+		ad_returnredirect "test-sessione?esame_id=$esame_id&rispusr_id=$rispusr_id"
+	    }
+	    ad_script_abort
 	}
-    } -edit_data {
-	db_dml upd_risp ""
-    } -on_submit {
-        set ctr_errori 0
-        if {$ctr_errori > 0} {
-            break
-        }
-    } -after_submit {
-	if {$domanda_num == 5} {
-	    ad_returnredirect "test-sessione?esame_id=$esame_id&rispusr_id=$rispusr_id"
-        } else {
-	    incr rispusr_id
-	    ad_returnredirect "test-sessione?esame_id=$esame_id&rispusr_id=$rispusr_id"
+} else {
+    ad_form -name risposta \
+	-mode $mode \
+	-edit_buttons $buttons \
+	-has_edit 1 \
+	-export {esame_id} \
+	-select_query_name load_risposta \
+	-form {
+	    rispusr_id:key
+	    {risposta_id:integer(radio),optional
+		{label "Risposte"}
+		{options {[db_list_of_lists risposte ""]}}
+		{html {size 4}}
+		{help_text "Puoi scegliere solo una risposta. In caso di modifica, deseleziona la precedente."}
+	    }
+	} -new_data {
+	    db_transaction {
+		db_dml ins_risp ""
+	    }
+	} -edit_data {
+	    db_dml upd_risp ""
+	} -on_submit {
+	    set ctr_errori 0
+	    if {$ctr_errori > 0} {
+		break
+	    }
+	} -after_submit {
+	    if {$domanda_num == 5} {
+		ad_returnredirect "test-sessione?esame_id=$esame_id&rispusr_id=$rispusr_id"
+	    } else {
+		incr rispusr_id
+		ad_returnredirect "test-sessione?esame_id=$esame_id&rispusr_id=$rispusr_id"
+	    }
+	    ad_script_abort
 	}
-	ad_script_abort
-    }
+}
 set righello "<table class=\"table\" style=\"margin-bottom:0px\"><tr>"
 set conta 1
 db_foreach righello "" {

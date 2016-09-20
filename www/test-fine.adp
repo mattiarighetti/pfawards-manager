@@ -10,8 +10,9 @@
       </div>
 	<br><br><br>
 	<center>
-	<a href="http://demo.pfawards.professionefinanza.com/?utente_id=@utente_id;noquote@"><button type="button" class="btn btn-primary">SCEGLI ALTRA MATERIA</button></a>
-	<a href="http://demo.pfawards.professionefinanza.com/"><button type="button" class="btn btn-primary">NUOVO</button></a>
+	<a href="http://demo.pfawards.professionefinanza.com/categorie-list?utente_id=@utente_id;noquote@"><button type="button" class="btn btn-primary">SCEGLI ALTRA MATERIA</button></a>
+	<!--	<a href="http://demo.pfawards.professionefinanza.com/"><button type="button" class="btn btn-primary">NUOVO</button></a>-->
+	<a href="http://sso.professionefinanza.com/pfawards"><button type="button" class="btn btn-primary">RITORNA ALLA DASHBOARD</button></a>
 	  </center>
 	      </div>
       </div>

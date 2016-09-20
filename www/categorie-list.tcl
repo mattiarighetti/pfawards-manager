@@ -23,6 +23,6 @@ template::list::create \
 db_multirow \
     -extend {
 	esame_url
-    } categorie query "SELECT descrizione, categoria_id FROM categoriaevento" {
+    } categorie query "SELECT c.descrizione, c.categoria_id FROM categoriaevento c where not exists (select * from itfaw_esami e where e.utente_id = :utente_id and e.categoria_id = c.categoria_id)" {
 	set esame_url [export_vars -base "test-prepara" {utente_id categoria_id}]
     }
