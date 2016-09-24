@@ -23,5 +23,8 @@
 	  </td>
 	  </tr>
 	</table>
-      </div>
+	<br />
+	<a class="btn btn-primary btn-lg pull-right" href="@link_fine@"><span class="glyphicon glyphicon-open-file"></span> Termina l'esame</a>
+	    <br />
+	</div>
 	</div>
